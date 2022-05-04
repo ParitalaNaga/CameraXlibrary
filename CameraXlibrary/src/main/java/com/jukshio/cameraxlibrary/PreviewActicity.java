@@ -13,10 +13,12 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.AttributeSet;
 import android.util.Log;
 import android.util.Rational;
 import android.util.Size;
 import android.view.Surface;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
@@ -40,7 +42,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Objects;
 
-public class PreviewActicity extends AppCompatActivity {
+public class PreviewActicity extends View {
 
     AutoFitTextureView textureView;
     private int REQUEST_CODE_PERMISSIONS = 101;
@@ -59,7 +61,28 @@ public class PreviewActicity extends AppCompatActivity {
     private CameraManager cameraManager;
     private String getCameraID;
     private boolean flashLight = true;
+    Context context;
 
+    public PreviewActicity(Context context) {
+        super(context);
+        this.context = context;
+        startCamera();
+
+    }
+
+    public PreviewActicity(Context context, @Nullable AttributeSet attrs) {
+        super(context, attrs);
+    }
+
+    public PreviewActicity(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+    }
+
+    public PreviewActicity(Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+        super(context, attrs, defStyleAttr, defStyleRes);
+    }
+
+/*
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +99,7 @@ public class PreviewActicity extends AppCompatActivity {
         capturePhotos();
         //flashLightOn();
     }
+*/
 
     public void startCamera() {
 
@@ -129,7 +153,7 @@ public class PreviewActicity extends AppCompatActivity {
 
     public void capturePhotos() {
 
-        try {
+
 /*
         File direct = new File(Environment.getExternalStorageDirectory() + "/DirName");
 
@@ -154,10 +178,12 @@ public class PreviewActicity extends AppCompatActivity {
             e.printStackTrace();
         }
 */
+/*
+        try {
             imageCapture = new ImageCaptureConfig.Builder().setCaptureMode(ImageCapture.CaptureMode.MAX_QUALITY)
-                    .setTargetRotation(getWindowManager().getDefaultDisplay().getRotation()).build();
+                    .setTargetRotation(context.getWindowManager().getDefaultDisplay().getRotation()).build();
             imgCap = new ImageCapture(imageCapture);
-            resolver = getContentResolver();
+            resolver = context.getContentResolver();
             contentValues = new ContentValues();
             contentValues.put(MediaStore.MediaColumns.DISPLAY_NAME, "Image_" + ".jpg");
             contentValues.put(MediaStore.MediaColumns.MIME_TYPE, "image/jpeg");
@@ -169,14 +195,14 @@ public class PreviewActicity extends AppCompatActivity {
             imgCap.takePicture(file, new ImageCapture.OnImageSavedListener() {
                 @Override
                 public void onImageSaved(@NonNull File file) {
-                    Toast.makeText(PreviewActicity.this, "Photo Saved" + file, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "Photo Saved" + file, Toast.LENGTH_SHORT).show();
                     Log.e("TAG", "onImageSaved: " + file);
                 }
 
                 @Override
                 public void onError(@NonNull ImageCapture.UseCaseError useCaseError, @NonNull String message, @Nullable Throwable cause) {
 
-                    Toast.makeText(PreviewActicity.this, "error", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "error", Toast.LENGTH_SHORT).show();
                 }
             });
 
@@ -186,12 +212,13 @@ public class PreviewActicity extends AppCompatActivity {
         } catch (IOException e) {
             e.printStackTrace();
         }
+*/
 
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     public void flashLightOn() {
-        cameraManager = (CameraManager) getSystemService(Context.CAMERA_SERVICE);
+        cameraManager = (CameraManager) context.getSystemService(Context.CAMERA_SERVICE);
         try {
             // O means back camera unit,
             // 1 means front camera unit
@@ -207,7 +234,7 @@ public class PreviewActicity extends AppCompatActivity {
 
                 // Inform the user about the flashlight
                 // status using Toast message
-                Toast.makeText(PreviewActicity.this, "Flashlight is turned ON", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "Flashlight is turned ON", Toast.LENGTH_SHORT).show();
             } catch (CameraAccessException e) {
                 // prints stack trace on standard error
                 // output error stream
@@ -250,15 +277,14 @@ public class PreviewActicity extends AppCompatActivity {
         textureView.setTransform(mx);
     }
 
-    @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
 
         if (requestCode == REQUEST_CODE_PERMISSIONS) {
             if (allPermissionsGranted()) {
                 startCamera();
             } else {
-                Toast.makeText(this, "Permissions not granted by the user.", Toast.LENGTH_SHORT).show();
-                finish();
+                Toast.makeText(context, "Permissions not granted by the user.", Toast.LENGTH_SHORT).show();
+
             }
         }
     }
@@ -266,7 +292,7 @@ public class PreviewActicity extends AppCompatActivity {
     public boolean allPermissionsGranted() {
 
         for (String permission : REQUIRED_PERMISSIONS) {
-            if (ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
+            if (ContextCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED) {
                 return false;
             }
         }
