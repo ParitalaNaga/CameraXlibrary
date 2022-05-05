@@ -43,7 +43,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Objects;
 
-public class PreviewActicity extends View {
+public class PreviewActicity extends Preview {
 
     AutoFitTextureView textureView;
     private int REQUEST_CODE_PERMISSIONS = 101;
@@ -64,10 +64,20 @@ public class PreviewActicity extends View {
     private boolean flashLight = true;
     Context context;
 
+    /**
+     * Creates a new preview use case from the given configuration.
+     *
+     * @param config for this use case instance
+     */
+    public PreviewActicity(PreviewConfig config) {
+        super(config);
+    }
+
+/*
     public PreviewActicity(Context context) {
         super(context);
         this.context = context;
-
+        textureView = new AutoFitTextureView(context);
 
     }
 
@@ -83,12 +93,10 @@ public class PreviewActicity extends View {
         super(context, attrs, defStyleAttr, defStyleRes);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        flashLightOn();
-        textureView = new AutoFitTextureView(context);
+
         if (allPermissionsGranted()) {
             startCamera();
         } else {
@@ -96,6 +104,7 @@ public class PreviewActicity extends View {
         }
 
     }
+*/
 
     /*
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -230,35 +239,6 @@ public class PreviewActicity extends View {
 */
 
     }
-
-    @RequiresApi(api = Build.VERSION_CODES.M)
-    public void flashLightOn() {
-        cameraManager = (CameraManager) context.getSystemService(Context.CAMERA_SERVICE);
-        try {
-            // O means back camera unit,
-            // 1 means front camera unit
-            getCameraID = cameraManager.getCameraIdList()[0];
-        } catch (CameraAccessException e) {
-            e.printStackTrace();
-        }
-        if (flashLight) {
-            try {
-                // true sets the torch in ON mode
-                cameraManager.setTorchMode(getCameraID, true);
-
-
-                // Inform the user about the flashlight
-                // status using Toast message
-                Toast.makeText(context, "Flashlight is turned ON", Toast.LENGTH_SHORT).show();
-            } catch (CameraAccessException e) {
-                // prints stack trace on standard error
-                // output error stream
-                e.printStackTrace();
-            }
-        }
-
-    }
-
 
     public void updateTransform() {
         Matrix mx = new Matrix();
