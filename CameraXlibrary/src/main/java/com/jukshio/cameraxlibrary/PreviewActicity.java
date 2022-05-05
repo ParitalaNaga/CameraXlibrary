@@ -43,7 +43,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Objects;
 
-public class PreviewActicity extends Preview {
+public class PreviewActicity extends View {
 
     AutoFitTextureView textureView;
     private int REQUEST_CODE_PERMISSIONS = 101;
