@@ -5,6 +5,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraManager;
@@ -66,7 +67,7 @@ public class PreviewActicity extends View {
     public PreviewActicity(Context context) {
         super(context);
         this.context = context;
-        startCamera();
+
 
     }
 
@@ -82,7 +83,21 @@ public class PreviewActicity extends View {
         super(context, attrs, defStyleAttr, defStyleRes);
     }
 
-/*
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    @Override
+    protected void onDraw(Canvas canvas) {
+        super.onDraw(canvas);
+        flashLightOn();
+        textureView = new AutoFitTextureView(context);
+        if (allPermissionsGranted()) {
+            startCamera();
+        } else {
+            Toast.makeText(context, "Permissions not granted by the user", Toast.LENGTH_SHORT).show();
+        }
+
+    }
+
+    /*
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
