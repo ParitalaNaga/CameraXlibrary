@@ -64,16 +64,8 @@ public class PreviewActicity extends View {
     private boolean flashLight = true;
     Context context;
 
-    /**
-     * Creates a new preview use case from the given configuration.
-     *
-     * @param config for this use case instance
-     */
-    public PreviewActicity(PreviewConfig config) {
-        super(config);
-    }
 
-/*
+
     public PreviewActicity(Context context) {
         super(context);
         this.context = context;
@@ -104,7 +96,6 @@ public class PreviewActicity extends View {
         }
 
     }
-*/
 
     /*
     @RequiresApi(api = Build.VERSION_CODES.M)
